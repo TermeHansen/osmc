@@ -86,7 +86,6 @@ for option in $(/bin/busybox cat /proc/cmdline); do
 		OPTION_ROOT=$(echo "${option#*=}" | /bin/busybox sed 's/"//g')
 		ROOT_STR=$OPTION_ROOT
 		PARTUUID=$(echo "$OPTION_ROOT" | /bin/busybox grep "^PARTUUID=" | /bin/busybox sed 's/^PARTUUID=//g')
-#		if [ -n "$PARTUUID" ]; then OPTION_ROOT=$(/bin/busybox readlink -f /dev/disk/by-partuuid/${PARTUUID}); fi
 		UUID=$(echo "$OPTION_ROOT" | /bin/busybox grep "^UUID=" | /bin/busybox sed 's/^UUID=//g')
 		if ! [ -z "$UUID$PARTUUID" ]; then
 			# it takes a while for USB partitions to show up
@@ -117,6 +116,7 @@ for option in $(/bin/busybox cat /proc/cmdline); do
 			echo "          Guessing root is on $OPTION_ROOT"
 			/bin/busybox sleep 5
 		fi
+		;;
 	  rootfstype=*)
 		OPTION_FILESYSTEM="${option#*=}"
 		;;
